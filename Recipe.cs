@@ -1,77 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RecipeApp
 {
-
-    class Recipe
+    public class Recipe
     {
-        private readonly List<Ingredient> originalIngredients; // Store original ingredients
+        public string Name { get; set; }
         public List<Ingredient> Ingredients { get; set; }
         public List<string> Steps { get; set; }
 
-        public Recipe(List<Ingredient> ingredients, List<string> steps)
+        public event Program.CalorieNotification OnCaloriesExceeded;
+
+        public Recipe(string name, List<Ingredient> ingredients, List<string> steps)
         {
+            Name = name;
             Ingredients = ingredients;
             Steps = steps;
-            originalIngredients = new List<Ingredient>(ingredients); // Store original ingredients
-        }
 
-        public void Rescale(int option)
-        {
-            double scale;
-            switch (option)
+            if (GetTotalCalories() > 300)
             {
-                case 1:
-                    scale = 0.5;
-                    break;
-                case 2:
-                    scale = 1.0;
-                    break;
-                case 3:
-                    scale = 2.0;
-                    break;
-                case 4:
-                    scale = 3.0;
-                    break;
-                default:
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Invalid rescale option.");
-                    
-                    return;
-            }
-
-            for (int i = 0; i < Ingredients.Count; i++)
-            {
-                // Scale based on original quantity
-                Ingredients[i].Quantity = originalIngredients[i].Quantity * scale;
+                OnCaloriesExceeded?.Invoke($"Warning: The recipe \"{name}\" exceeds 300 calories!");
             }
         }
 
-        public void ResetQuantity()
+        public double GetTotalCalories()
         {
-            for (int i = 0; i < Ingredients.Count; i++)
-            {
-                // Revert to original quantity
-                Ingredients[i].Quantity = originalIngredients[i].Quantity;
-            }
-        }
-
-        public void SaveOriginalRecipe()
-        {
-            originalIngredients.Clear();
-            originalIngredients.AddRange(Ingredients);
-        }
-
-        public void ClearOriginalRecipe()
-        {
-            originalIngredients.Clear();
+            return Ingredients.Sum(ingredient => ingredient.Calories * ingredient.Quantity);
         }
 
         public override string ToString()
         {
             string recipe = "Ingredients:\n";
-            foreach (Ingredient ingredient in Ingredients)
+            foreach (var ingredient in Ingredients)
             {
                 recipe += $"{ingredient}\n";
             }
@@ -82,9 +43,9 @@ namespace RecipeApp
                 recipe += $"{i + 1}. {Steps[i]}\n";
             }
 
+            recipe += $"\nTotal Calories: {GetTotalCalories()}\n";
+
             return recipe;
         }
     }
 }
-
-
