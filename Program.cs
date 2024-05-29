@@ -153,7 +153,7 @@ namespace RecipeApp
             return result;
         }
 
-        private static void ResetConsoleColor()
+        private static void ResetConsoleColor()//reset color function newly added based on feedback
         {
             Console.ResetColor();
         }
