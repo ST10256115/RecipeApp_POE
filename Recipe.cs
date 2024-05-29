@@ -10,7 +10,7 @@ namespace RecipeApp
         public List<Ingredient> Ingredients { get; set; }
         public List<string> Steps { get; set; }
 
-        public event Program.CalorieNotification OnCaloriesExceeded;
+        internal event Program.CalorieNotification OnCaloriesExceeded;
 
         public Recipe(string name, List<Ingredient> ingredients, List<string> steps)
         {
