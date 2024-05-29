@@ -20,8 +20,7 @@ namespace RecipeApp
                     Console.Clear(); // Clear the console when starting a new recipe
                     Console.WriteLine("Please enter recipe details:");
 
-                    Console.Write("Number of ingredients: ");
-                    int ingredientCount = int.Parse(Console.ReadLine());
+                    int ingredientCount = GetValidatedIntegerInput("Number of ingredients: ");
 
                     List<Ingredient> ingredients = new List<Ingredient>();
                     for (int i = 0; i < ingredientCount; i++)
@@ -29,16 +28,14 @@ namespace RecipeApp
                         Console.WriteLine($"\nIngredient {i + 1}:");
                         Console.Write("Name: ");
                         string name = Console.ReadLine();
-                        Console.Write("Quantity: ");
-                        double quantity = double.Parse(Console.ReadLine());
+                        double quantity = GetValidatedDoubleInput("Quantity: ");
                         Console.Write("Unit of measurement: ");
                         string unit = Console.ReadLine();
 
                         ingredients.Add(new Ingredient(name, quantity, unit));
                     }
 
-                    Console.Write("\nNumber of steps: ");
-                    int stepCount = int.Parse(Console.ReadLine());
+                    int stepCount = GetValidatedIntegerInput("\nNumber of steps: ");
 
                     List<string> steps = new List<string>();
                     for (int i = 0; i < stepCount; i++)
@@ -64,8 +61,7 @@ namespace RecipeApp
                 Console.WriteLine("5. Clear recipe and start new");
                 Console.WriteLine("6. Exit");
 
-                Console.Write("Enter option: ");
-                int option = int.Parse(Console.ReadLine());
+                int option = GetValidatedIntegerInput("Enter option: ");
 
                 switch (option)
                 {
@@ -75,8 +71,7 @@ namespace RecipeApp
                         Console.WriteLine("2. 1 person");
                         Console.WriteLine("3. 2 people");
                         Console.WriteLine("4. 3 people");
-                        Console.Write("Enter option: ");
-                        int rescaleOption = int.Parse(Console.ReadLine());
+                        int rescaleOption = GetValidatedIntegerInput("Enter option: ");
                         recipe.Rescale(rescaleOption);
                         Console.WriteLine("\nRescaled recipe details:");
                         Console.WriteLine(recipe);
@@ -105,10 +100,19 @@ namespace RecipeApp
                         originalRecipeSaved = false; // Ensure original recipe is not saved after clearing
                         break;
                     case 5:
-                        Console.Clear(); // Clear the console when starting a new recipe
-                        recipeCreated = false;
-                        originalRecipeSaved = false; // Ensure original recipe is not saved when starting a new recipe
-                        Console.WriteLine("\nRecipe cleared and ready for new recipe.");
+                        Console.Write("\nAre you sure you want to clear the recipe and start a new one? (yes/no): ");
+                        string confirmation = Console.ReadLine().Trim().ToLower();
+                        if (confirmation == "yes" || confirmation == "y")
+                        {
+                            Console.Clear(); // Clear the console when starting a new recipe
+                            recipeCreated = false;
+                            originalRecipeSaved = false; // Ensure original recipe is not saved when starting a new recipe
+                            Console.WriteLine("\nRecipe cleared and ready for new recipe.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nClear recipe operation canceled.");
+                        }
                         break;
                     case 6:
                         Environment.Exit(0);
@@ -118,6 +122,28 @@ namespace RecipeApp
                         break;
                 }
             }
+        }
+
+        private static int GetValidatedIntegerInput(string prompt)
+        {
+            int result;
+            Console.Write(prompt);
+            while (!int.TryParse(Console.ReadLine(), out result) || result <= 0)
+            {
+                Console.Write("Invalid input. Please enter a positive integer: ");
+            }
+            return result;
+        }
+
+        private static double GetValidatedDoubleInput(string prompt)
+        {
+            double result;
+            Console.Write(prompt);
+            while (!double.TryParse(Console.ReadLine(), out result) || result <= 0)
+            {
+                Console.Write("Invalid input. Please enter a positive number: ");
+            }
+            return result;
         }
     }
 }
