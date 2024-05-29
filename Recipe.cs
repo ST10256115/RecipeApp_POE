@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace RecipeApp
 {
-    class Recipe//functions and procedures
+
+    class Recipe
     {
         private readonly List<Ingredient> originalIngredients; // Store original ingredients
         public List<Ingredient> Ingredients { get; set; }
@@ -34,7 +35,9 @@ namespace RecipeApp
                     scale = 3.0;
                     break;
                 default:
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Invalid rescale option.");
+                    
                     return;
             }
 
