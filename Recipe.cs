@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace RecipeApp
 {
-    public class Recipe
+    public class Recipe// recipe class containing all the functions needed for the app
     {
         public string Name { get; set; }
         public List<Ingredient> Ingredients { get; set; }
