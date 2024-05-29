@@ -1,6 +1,6 @@
 ﻿namespace RecipeApp
 {
-    class Ingredient//storage for working with ingredients
+   public class Ingredient//storage for working with ingredients
     {
         public string Name { get; set; }
         public double Quantity { get; set; }
