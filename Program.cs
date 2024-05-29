@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace RecipeApp
 {
-    class Program
+  public class Program
     {
         public delegate void CalorieNotification(string message);
 
